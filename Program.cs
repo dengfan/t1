@@ -20,7 +20,7 @@ namespace t1
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine(" --------------------------------- ");
-            Console.WriteLine(" | T1文本文件编码查询转换器 v1.0 | ");
+            Console.WriteLine(" | T1文件编码查询转换器 v1.0     | ");
             Console.WriteLine(" | https://github.com/dengfan/t1 | ");
             Console.WriteLine(" --------------------------------- ");
             Console.ResetColor();
