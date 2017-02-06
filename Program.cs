@@ -273,16 +273,11 @@ namespace t1
                     string convertInfo = string.Format("[{0}>>{1}]", encodingName, IdentifyEncoding.Names[dstKey]);
                     if (encodingName.ToUpper().Equals("GB2312") && srcKey == 0)
                     {
-                        if (dstKey == 6 && DeleteAndCreate(fileFullName, convertInfo, ConvertAndGet(file, gb2312, utf8))) count++; // GB2312>>UTF-8
+                        if (dstKey == 6 && Convert(fileFullName, convertInfo, gb2312, utf8)) count++; // GB2312>>UTF-8
                     }
-                    //else if (encodingName.ToUpper().Equals("BIG5") && srcKey == 3)
-                    //{
-                    //    if (dstKey == 6 && DeleteAndCreate(fileFullName, convertInfo, ConvertAndGet(file, big5, utf8))) count++; // BIG5>>UTF-8
-                    //}
                     else if (encodingName.ToUpper().Equals("UTF-8") && srcKey == 6)
                     {
-                        if (dstKey == 0 && DeleteAndCreate(fileFullName, convertInfo, ConvertAndGet(file, utf8, gb2312))) count++; // UTF-8>>GB2312
-                        //else if (dstKey == 3 && DeleteAndCreate(fileFullName, convertInfo, ConvertAndGet(file, utf8, big5))) count++; // UTF-8>>BIG5
+                        if (dstKey == 0 && Convert(fileFullName, convertInfo, utf8, gb2312)) count++; // UTF-8>>GB2312
                     }
                 }
                 else //对于子目录，进行递归调用
@@ -294,49 +289,47 @@ namespace t1
             return count;
         }
 
-        static byte[] ConvertAndGet(FileInfo file, Encoding srcEncoding, Encoding dstEncoding)
+        static bool Convert(string fileFullName, string convertInfo, Encoding srcEncoding, Encoding dstEncoding)
         {
-            byte[] b = new byte[file.Length];
-            using (FileStream fs = file.Open(FileMode.Open, FileAccess.Read))
+            try
             {
-                while (fs.Read(b, 0, b.Length) > 0)
+                if (File.Exists(fileFullName))
                 {
-                    b = Encoding.Convert(srcEncoding, dstEncoding, b);
-                }
-            }
-            return b;
-        }
+                    string txt = string.Empty;
+                    using (StreamReader sr = new StreamReader(fileFullName, srcEncoding))
+                    {
+                        txt = sr.ReadToEnd();
+                        sr.Close();
+                    }
 
-        static bool DeleteAndCreate(string fileFullName, string convertEncoding, byte[] b)
-        {
-            if (File.Exists(fileFullName))
-            {
-                string newFullFileName = string.Format("{0}.bak", fileFullName);
-                if (File.Exists(newFullFileName))
-                {
-                    File.Delete(newFullFileName);
-                }
-                File.Move(fileFullName, newFullFileName);
-            }
+                    if (File.Exists(fileFullName))
+                    {
+                        string newFullFileName = string.Format("{0}.bak", fileFullName);
+                        if (File.Exists(newFullFileName))
+                        {
+                            File.Delete(newFullFileName);
+                        }
+                        File.Move(fileFullName, newFullFileName);
+                    }
 
-            using (FileStream fs = new FileInfo(fileFullName).Create())
-            {
-                try
-                {
-                    fs.Write(b, 0, b.Length);
+                    using (StreamWriter sw = new StreamWriter(fileFullName, false, dstEncoding))
+                    {
+                        sw.Write(txt);
+                        sw.Close();
+                    }
 
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    Console.Write(string.Format("  {0} ", convertEncoding));
+                    Console.Write(string.Format("  {0} ", convertInfo));
                     Console.ForegroundColor = ConsoleColor.Gray;
                     Console.Write(fileFullName.Replace(path, string.Empty));
                     Console.WriteLine();
 
                     return true;
                 }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine("出错了: {0}", e.ToString());
-                }
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("出错了: {0}", e.ToString());
             }
 
             return false;
