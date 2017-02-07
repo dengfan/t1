@@ -108,7 +108,7 @@ namespace t1
                                 int count = ConvertFiles(new DirectoryInfo(path), srcKey, dstKey);
 
                                 Console.ForegroundColor = ConsoleColor.Magenta;
-                                Console.WriteLine(string.Format("############################## 转码完成，共转码{0}个符合条件的文件。##############################", count));
+                                Console.WriteLine("############################## 转码完成，共转码{0}个符合条件的文件。##############################", count);
                                 Console.ResetColor();
                             }
                         }
@@ -117,7 +117,7 @@ namespace t1
                             int count = ListFiles(new DirectoryInfo(path), key);
 
                             Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine(string.Format("############################## 查询完成，共找到{0}个符合条件的文件。##############################", count));
+                            Console.WriteLine("############################## 查询完成，共找到{0}个符合条件的文件。##############################", count);
                             Console.ResetColor();
                         }
                     }
@@ -160,7 +160,7 @@ namespace t1
                     if (!string.IsNullOrEmpty(str))
                     {
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.Write(string.Format("  [{0}] ", str));
+                        Console.Write("  [{0}] ", str);
                         Console.ForegroundColor = ConsoleColor.Gray;
                         Console.Write(file.FullName.Replace(path, string.Empty));
                         Console.WriteLine();
@@ -319,7 +319,7 @@ namespace t1
                     }
 
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    Console.Write(string.Format("  {0} ", convertInfo));
+                    Console.Write("  {0} ", convertInfo);
                     Console.ForegroundColor = ConsoleColor.Gray;
                     Console.Write(fileFullName.Replace(path, string.Empty));
                     Console.WriteLine();
