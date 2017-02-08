@@ -52,7 +52,7 @@ namespace t1
             {
                 var key = Console.ReadLine();
 
-                if (key.Length != 1 || !"az1234567890".Contains(key))
+                if (key.Length != 1 || !"az1234567890".Contains(key.ToLower()))
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.Error.Write("  无法识别[");
@@ -108,7 +108,7 @@ namespace t1
                                 int count = ConvertFiles(new DirectoryInfo(path), srcKey, dstKey);
 
                                 Console.ForegroundColor = ConsoleColor.Magenta;
-                                Console.WriteLine("############################## 转码完成，共转码{0}个符合条件的文件。##############################", count);
+                                Console.WriteLine("################## 转码完成，共转码{0}个符合条件的文件。##################", count);
                                 Console.ResetColor();
                             }
                         }
@@ -117,7 +117,7 @@ namespace t1
                             int count = ListFiles(new DirectoryInfo(path), key);
 
                             Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine("############################## 查询完成，共找到{0}个符合条件的文件。##############################", count);
+                            Console.WriteLine("################## 查询完成，共找到{0}个符合条件的文件。##################", count);
                             Console.ResetColor();
                         }
                     }
